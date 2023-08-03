@@ -50,15 +50,29 @@ public class Population {
         return group.getFittest(hot);
     }
 
-    public Population evolve(boolean hot, double mutationRate, int tournamentSize) {
+    public Population evolve(boolean hot, double mutationRate, int tournamentSize, int randomSelectionSize) {
         Population newPopulation = new Population(individuals.size(), individuals.get(0).getGenes().size());
-        for(int i = 0; i < individuals.size(); i++) {
+        for(int i = 0; i < randomSelectionSize; i++) {
+            // get random individual from current population
+            int randomIndex = (int) (Math.random() * individuals.size());
+            newPopulation.getIndividuals().set(i, individuals.get(randomIndex));
+        }
+        for(int i = randomSelectionSize; i < individuals.size(); i++) {
             Individual individual1 = tournamentSelection(hot, tournamentSize);
             Individual individual2 = tournamentSelection(hot, tournamentSize);
             Individual individual = EvolutionTools.crossover(individual1, individual2);
             newPopulation.getIndividuals().set(i, individual.mutate(mutationRate));
         }
         return newPopulation;
+    }
+
+    public String toString() {
+        StringBuilder stringBuilder = new StringBuilder();
+        for(int i = 0; i < this.getIndividuals().size(); i++) {
+            stringBuilder.append(this.getIndividuals().get(i).toString());
+            stringBuilder.append("\n");
+        }
+        return stringBuilder.toString();
     }
 
 }

@@ -53,4 +53,12 @@ public class Individual {
         return individual;
     }
 
+    public String toString() {
+        StringBuilder stringBuilder = new StringBuilder();
+        for (int i = 0; i < this.getGenes().size(); i++) {
+            stringBuilder.append(this.getGenes().get(i));
+        }
+        return stringBuilder.toString();
+    }
+
 }
