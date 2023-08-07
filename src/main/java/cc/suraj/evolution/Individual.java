@@ -4,31 +4,49 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Individual {
-    List<Integer> genes = new ArrayList<>();
+    List<Integer> genes;
     public Individual(int numberOfGenes) {
+        genes = generateRandomGene(numberOfGenes);
+    }
+
+    public List<Integer> generateRandomGene(int numberOfGenes) {
+        int numberOfOnes = (int) (Math.random() * numberOfGenes);
+
+        List<Integer> indices = generateRandomIndices(numberOfGenes, numberOfOnes);
+        List<Integer> genes = new ArrayList<>();
         for(int i = 0; i < numberOfGenes; i++) {
-            genes.add((int) Math.round(Math.random()));
+            genes.add(0);
         }
+        for(int i = 0; i < numberOfOnes; i++) {
+            genes.set(indices.get(i), 1);
+        }
+        return genes;
+    }
+
+    public List<Integer> generateRandomIndices(int numberOfGenes, int numberOfOnes) {
+        List<Integer> indices = new ArrayList<>();
+        for(int i = 0; i < numberOfGenes; i++) {
+            indices.add(i);
+        }
+        for(int i = 0; i < numberOfGenes - numberOfOnes; i++) {
+            int randomIndex = (int) (Math.random() * indices.size());
+            indices.remove(randomIndex);
+        }
+        return indices;
+    }
+
+    public Individual(List<Integer> genes) {
+        this.genes = genes;
     }
 
     public List<Integer> getGenes() {
         return genes;
     }
 
-    int getFitness(boolean hot) {
-        int fitness = 0;
-        for (int i = 0; i < genes.size(); i++) {
-            if (hot) {
-                if (genes.get(i) == 1) {
-                    fitness++;
-                }
-            } else {
-                if (genes.get(i) == 0) {
-                    fitness++;
-                }
-            }
-        }
-        return fitness;
+    int getFitness(Climate climate) {
+        return (climate == Climate.HOT) ?
+                genes.stream().mapToInt(Integer::intValue).sum() :
+                genes.size() - genes.stream().mapToInt(Integer::intValue).sum();
     }
 
     Individual cloneIndividual() {
@@ -61,4 +79,8 @@ public class Individual {
         return stringBuilder.toString();
     }
 
+}
+
+enum Climate {
+    HOT, COLD
 }

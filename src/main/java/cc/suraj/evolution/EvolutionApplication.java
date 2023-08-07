@@ -23,21 +23,60 @@ public class EvolutionApplication implements CommandLineRunner {
 	public void run(String... args) throws Exception {
 		LOG.error("EXECUTING : command line runner");
 		//Create a population
-		Population population = new Population(200, 100);
-		LOG.error("Initial fittest individual: " + population.getFittest(true).getFitness(true));
-		LOG.error("Initial population", population);
-		boolean temperature = true;
+		Population population = new Population(10, 20);
+		Climate climate = Climate.HOT;
+		// Combine three logs into one
+		LOG.info("""
+				----------------------------------------
+				Initial population: %s
+				Initial average fitness for hot: %s
+				Initial average fitness for cold: %s
+				----------------------------------------
+				""".formatted(
+				population.getIndividuals(),
+				Double.toString(population.getAverageFitness(Climate.HOT)),
+				Double.toString(population.getAverageFitness(Climate.COLD))));
+		LOG.info("Initial population: " + population.getIndividuals());
+
+		LOG.info("Initial average fitness for hot: " + population.getAverageFitness(Climate.HOT));
+		LOG.info("Initial average fitness for cold: " + population.getAverageFitness(Climate.COLD));
 		//Evolve population 100 times
-		for (int i = 0; i < 1000; i++) {
-//			randomize hot/cold temperature
-			temperature = Math.random() < 0.5;
-			population = population.evolve(temperature, 0.03, 10, 5);
+		for (int i = 0; i < 3; i++) {
+//			randomly select climate
+//			climate = Math.random() < 0.5 ? Climate.HOT : Climate.COLD;
+//			population = population.evolve(climate, 0.03, 10, 5);
+			population = population.evolve_v2(climate, 0.03, 20);
+//			LOG.info("""
+//					----------------------------------------
+//					Generation: %i
+//					Average fitness for hot: %d
+//					Average fitness for cold: %f
+//					Fittest individual for hot: %f
+//					Fittest individual for cold: %f
+//					----------------------------------------
+//					""".formatted(
+//							i,
+//					population.getAverageFitness(Climate.HOT),
+//					population.getAverageFitness(Climate.COLD),
+//					population.getFittest(Climate.HOT).getFitness(Climate.HOT),
+//					population.getFittest(Climate.COLD).getFitness(Climate.COLD)));
+			LOG.info("Population: " + population.getIndividuals());
 		}
 
-		//Print fittest individual
-		LOG.error("Fittest individual: " + population.getFittest(temperature).getFitness(temperature));
-		LOG.error("Population after evolution", population);
+//		for (int i = 0; i < 500; i++) {
+////			randomly select climate
+////			climate = Math.random() < 0.5 ? Climate.HOT : Climate.COLD;
+////			population = population.evolve(climate, 0.03, 10, 5);
+//			population = population.evolve_v2(Climate.COLD, 0.03, 0);
+//		}
 
+		//Print fittest individual
+		LOG.info("Fittest individual: " + population.getFittest(climate).getFitness(climate));
+		Climate anotherClimate = climate == Climate.HOT ? Climate.COLD : Climate.HOT;
+		LOG.info("Fittest individual for another climate: " + population.getFittest(anotherClimate).getFitness(anotherClimate));
+		LOG.info("Final Average fitness: " + population.getAverageFitness(climate));
+		// Print average fitness for another climate
+		LOG.info("Final Average fitness for another climate: " + population.getAverageFitness(anotherClimate));
 	}
 
 }

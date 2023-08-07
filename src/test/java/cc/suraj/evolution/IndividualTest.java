@@ -2,6 +2,8 @@ package cc.suraj.evolution;
 
 import org.junit.jupiter.api.Test;
 
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 class IndividualTest {
@@ -22,23 +24,25 @@ class IndividualTest {
     }
 
     @Test
-    void get_fittest_should_return_individual_with_highest_fitness_for_hot_temperature() {
-        Population population = new Population(10, 10);
-        Individual fittest = population.getFittest(true);
-        for (Individual individual :
-                population.getIndividuals()) {
-            assertTrue(fittest.getFitness(true) >= individual.getFitness(true));
-        }
+    void get_fittest_should_return_correct_fitness_for_hot_temperature() {
+        List<Integer> strongGenes = List.of(1, 1, 1, 1, 1, 1, 1, 1, 1, 1);
+        Individual individual = new Individual(strongGenes);
+        assertEquals(10, individual.getFitness(Climate.HOT));
+
+        List<Integer> weakGenes = List.of(0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+        individual = new Individual(weakGenes);
+        assertEquals(0, individual.getFitness(Climate.HOT));
     }
 
     @Test
     void get_fittest_should_return_individual_with_highest_fitness_for_cold_temperature() {
-        Population population = new Population(10, 10);
-        Individual fittest = population.getFittest(false);
-        for (Individual individual :
-                population.getIndividuals()) {
-            assertTrue(fittest.getFitness(false) >= individual.getFitness(false));
-        }
+        List<Integer> weakGenes = List.of(1, 1, 1, 1, 1, 1, 1, 1, 1, 1);
+        Individual individual = new Individual(weakGenes);
+        assertEquals(0, individual.getFitness(Climate.COLD));
+
+        List<Integer> strongGenes = List.of(0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+        individual = new Individual(strongGenes);
+        assertEquals(10, individual.getFitness(Climate.COLD));
     }
 
     @Test
@@ -74,5 +78,25 @@ class IndividualTest {
         Individual clone = individual.cloneIndividual();
         individual.mutate(1);
         assertNotEquals(individual, clone);
+    }
+
+    @Test
+    void mutation_should_change_individual_if_mutation_rate_is_0_5() {
+        Individual individual = new Individual(20);
+        // Output mutation result to console for ten runs
+        for (int i = 0; i < 20; i++) {
+            System.out.println(individual.mutate(0.04));
+        }
+        Individual clone = individual.cloneIndividual();
+        individual.mutate(0.5);
+        System.out.println(individual);
+        assertNotEquals(individual, clone);
+    }
+
+    @Test
+    void generate_random_indices_should_return_correct_number_of_indices() {
+        Individual individual = new Individual(10);
+        List<Integer> indices = individual.generateRandomIndices(10, 5);
+        assertEquals(5, indices.size());
     }
 }
