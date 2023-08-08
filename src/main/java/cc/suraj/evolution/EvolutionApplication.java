@@ -23,28 +23,26 @@ public class EvolutionApplication implements CommandLineRunner {
 	public void run(String... args) throws Exception {
 		LOG.error("EXECUTING : command line runner");
 		//Create a population
-		Population population = new Population(10, 20);
+		Population population = new Population(30, 20);
 		Climate climate = Climate.HOT;
 		// Combine three logs into one
 		LOG.info("");
 		LOG.info("""
 				----------------------------------------
-				Initial population: %s
 				Initial average fitness for hot: %s
 				Initial average fitness for cold: %s
 				----------------------------------------
 				""".formatted(
-				population.getIndividuals(),
 				Double.toString(population.getAverageFitness(Climate.HOT)),
 				Double.toString(population.getAverageFitness(Climate.COLD))));
-
+		Population population0 = population.evolve_v2(climate, 0.03, 30);
+		Population population1 = population.evolve_v2(climate, 0.03, 20);
+		Population population2 = population.evolve_v2(climate, 0.03, 10);
 		for (int i = 0; i < 3; i++) {
 //			randomly select climate
 //			climate = Math.random() < 0.5 ? Climate.HOT : Climate.COLD;
 //			population = population.evolve(climate, 0.03, 10, 5);
-			population = population.evolve_v2(climate, 0.03, 30);
-			Population population1 = population.evolve_v2(climate, 0.03, 20);
-			Population population2 = population.evolve_v2(climate, 0.03, 10);
+
 //			LOG.info("""
 //					----------------------------------------
 //					Generation: %i
@@ -72,10 +70,10 @@ public class EvolutionApplication implements CommandLineRunner {
 					----------------------------------------
 					""".formatted(
 							Integer.toString(i),
-					Double.toString(population.getAverageFitness(Climate.HOT)),
-					Double.toString(population.getAverageFitness(Climate.COLD)),
-					Integer.toString(population.getFittest(Climate.HOT).getFitness(Climate.HOT)),
-					Integer.toString(population.getFittest(Climate.COLD).getFitness(Climate.COLD))));
+					Double.toString(population0.getAverageFitness(Climate.HOT)),
+					Double.toString(population0.getAverageFitness(Climate.COLD)),
+					Integer.toString(population0.getFittest(Climate.HOT).getFitness(Climate.HOT)),
+					Integer.toString(population0.getFittest(Climate.COLD).getFitness(Climate.COLD))));
 			LOG.info("""
 					------------POP2 20 Randomness----------------------------
 					Generation: %s
@@ -104,6 +102,9 @@ public class EvolutionApplication implements CommandLineRunner {
 					Double.toString(population2.getAverageFitness(Climate.COLD)),
 					Integer.toString(population2.getFittest(Climate.HOT).getFitness(Climate.HOT)),
 					Integer.toString(population2.getFittest(Climate.COLD).getFitness(Climate.COLD))));
+			population0 = population0.evolve_v2(climate, 0.03, 30);
+			population1 = population1.evolve_v2(climate, 0.03, 20);
+			population2 = population2.evolve_v2(climate, 0.03, 10);
 		}
 
 
