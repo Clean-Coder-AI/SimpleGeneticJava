@@ -20,4 +20,4 @@ randomness becomes irrelevant because most of the populations would have been fi
 
 If climate is to change before the population becomes at this peak fitness introduction of randomness helps population bounce back in changing climate
 
-Here is the plot for 30 generation and 20 number of genes [plot.png](plot.png)
+Here is the plot for 30 generations and 20 number of genes [plot.png](plot.png)
