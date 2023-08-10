@@ -18,6 +18,6 @@ That is the nature's way of keeping the population fit for the change in environ
 It is noted that randomness plays part until few generations. The more generations that passes with either HOT or COLD climate
 randomness becomes irrelevant because most of the populations would have been fit for the given climate.
 
-If climate is to change before the population becomes at this peak fitness introduction of randomness helps population bounce back in harsh climate
+If climate is to change before the population becomes at this peak fitness introduction of randomness helps population bounce back in changing climate
 
 Here is the plot for 30 generation and 20 number of genes [plot.png](plot.png)
