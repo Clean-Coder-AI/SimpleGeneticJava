@@ -125,14 +125,14 @@ public class EvolutionApplication implements CommandLineRunner {
 
 		// evolve the population for 30 generations
 		for (int i = 0; i < 30; i++) {
-			population = population.evolve_v2(hot, 0.03, 0);
+			population = population.evolve_v2(hot, 0.03, 30);
 			averageFitnessHot.add(population.getAverageFitness(hot));
 			averageFitnessCold.add(population.getAverageFitness(cold));
 			fittestHot.add(population.getFittest(hot).getFitness(hot));
 			fittestCold.add(population.getFittest(cold).getFitness(cold));
 		}
 		// create a csv file with the columns: generation, average fitness hot, average fitness cold, fittest hot, fittest cold
-		try (PrintWriter writer = new PrintWriter(new File("evolution.csv"))) {
+		try (PrintWriter writer = new PrintWriter(new File("evolution3.csv"))) {
 			StringBuilder sb = new StringBuilder();
 			sb.append("generation");
 			sb.append(',');
